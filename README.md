@@ -17,7 +17,9 @@ Ich habe heute das Hauptfenster für meinen Schulplaner erstellt und gestaltet. 
 
 ## Hausaufgaben vom 16.10.2026
 
-- [ ] Einen Button zum Hinzufügen von Terminen erstellen und die eingegebenen Daten beim Anklicken mit einer MessageBox anzeigen.
+- [x] Einen Button zum Hinzufügen von Terminen erstellen und die eingegebenen Daten beim Anklicken mit einer MessageBox anzeigen.
+
+Ich habe einen Hinzufügen-Button erstellt und mit einem Klick-Ereignis verbunden. Beim Anklicken werden Name, Fach und Datum aus den Textfeldern gelesen und in einer MessageBox angezeigt.
 
 ## 23.10.2026
 - [ ] Prüfen, ob Name und Fach ausgefüllt sind, und bei fehlenden Angaben eine Meldung anzeigen.
