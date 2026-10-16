@@ -10,9 +10,11 @@ Ich möchte ein C#-Programm erstellen, mit dem ich meine Prüfungen und Hausaufg
 
 ## 16.10.2026
 
-- [ ] Ein Windows-Forms-Projekt erstellen und die Benutzeroberfläche mit Textfeldern, Buttons und einer Tabelle gestalten.
-- [ ] Eine Funktion programmieren, mit der man neue Termine mit Titel, Fach und Datum hinzufügen kann und diese in der Tabelle angezeigt werden.
+- [ ] Ein neues Windows-Forms-Projekt erstellen und das Hauptfenster mit einem Titel gestalten.
+- [ ] Textfelder für den Namen, das Fach und das Datum eines Termins hinzufügen.
 
 ## Hausaufgaben vom 16.10.2026
 
-- [ ] Eine Funktion einbauen, mit der man einen ausgewählten Termin wieder löschen kann.
+- [ ] Einen Button zum Hinzufügen von Terminen erstellen und die eingegebenen Daten beim Anklicken mit einer MessageBox anzeigen.
+
+
