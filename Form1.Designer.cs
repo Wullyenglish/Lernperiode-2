@@ -35,6 +35,7 @@
             textBoxName = new TextBox();
             textBoxFach = new TextBox();
             textBoxDatum = new TextBox();
+            buttonHinzufuegen = new Button();
             SuspendLayout();
             // 
             // labelTitel
@@ -96,11 +97,22 @@
             textBoxDatum.Size = new Size(240, 31);
             textBoxDatum.TabIndex = 6;
             // 
+            // buttonHinzufuegen
+            // 
+            buttonHinzufuegen.Location = new Point(130, 280);
+            buttonHinzufuegen.Name = "buttonHinzufuegen";
+            buttonHinzufuegen.Size = new Size(150, 36);
+            buttonHinzufuegen.TabIndex = 7;
+            buttonHinzufuegen.Text = "Hinzufügen";
+            buttonHinzufuegen.UseVisualStyleBackColor = true;
+            buttonHinzufuegen.Click += buttonHinzufuegen_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonHinzufuegen);
             Controls.Add(textBoxDatum);
             Controls.Add(textBoxFach);
             Controls.Add(textBoxName);
@@ -123,5 +135,6 @@
         private TextBox textBoxName;
         private TextBox textBoxFach;
         private TextBox textBoxDatum;
+        private Button buttonHinzufuegen;
     }
 }
