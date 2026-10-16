@@ -28,59 +28,100 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label3 = new Label();
-            label2 = new Label();
+            labelTitel = new Label();
+            labelName = new Label();
+            labelFach = new Label();
+            labelDatum = new Label();
+            textBoxName = new TextBox();
+            textBoxFach = new TextBox();
+            textBoxDatum = new TextBox();
             SuspendLayout();
             // 
-            // label1
+            // labelTitel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(321, 37);
-            label1.Name = "label1";
-            label1.Size = new Size(103, 25);
-            label1.TabIndex = 0;
-            label1.Text = "Schulplaner";
-            label1.Click += label1_Click;
+            labelTitel.AutoSize = true;
+            labelTitel.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            labelTitel.Location = new Point(30, 25);
+            labelTitel.Name = "labelTitel";
+            labelTitel.Size = new Size(192, 45);
+            labelTitel.TabIndex = 0;
+            labelTitel.Text = "Schulplaner";
             // 
-            // label3
+            // labelName
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(618, 37);
-            label3.Name = "label3";
-            label3.Size = new Size(66, 25);
-            label3.TabIndex = 2;
-            label3.Text = "Datum";
-            label3.Click += label3_Click;
+            labelName.AutoSize = true;
+            labelName.Location = new Point(30, 100);
+            labelName.Name = "labelName";
+            labelName.Size = new Size(59, 25);
+            labelName.TabIndex = 1;
+            labelName.Text = "Name";
             // 
-            // label2
+            // labelFach
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(104, 37);
-            label2.Name = "label2";
-            label2.Size = new Size(47, 25);
-            label2.TabIndex = 3;
-            label2.Text = "Fach";
-            label2.Click += label2_Click;
+            labelFach.AutoSize = true;
+            labelFach.Location = new Point(30, 160);
+            labelFach.Name = "labelFach";
+            labelFach.Size = new Size(47, 25);
+            labelFach.TabIndex = 3;
+            labelFach.Text = "Fach";
+            // 
+            // labelDatum
+            // 
+            labelDatum.AutoSize = true;
+            labelDatum.Location = new Point(30, 220);
+            labelDatum.Name = "labelDatum";
+            labelDatum.Size = new Size(66, 25);
+            labelDatum.TabIndex = 5;
+            labelDatum.Text = "Datum";
+            // 
+            // textBoxName
+            // 
+            textBoxName.Location = new Point(130, 97);
+            textBoxName.Name = "textBoxName";
+            textBoxName.Size = new Size(240, 31);
+            textBoxName.TabIndex = 2;
+            // 
+            // textBoxFach
+            // 
+            textBoxFach.Location = new Point(130, 157);
+            textBoxFach.Name = "textBoxFach";
+            textBoxFach.Size = new Size(240, 31);
+            textBoxFach.TabIndex = 4;
+            // 
+            // textBoxDatum
+            // 
+            textBoxDatum.Location = new Point(130, 217);
+            textBoxDatum.Name = "textBoxDatum";
+            textBoxDatum.PlaceholderText = "TT.MM.JJJJ";
+            textBoxDatum.Size = new Size(240, 31);
+            textBoxDatum.TabIndex = 6;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(label2);
-            Controls.Add(label3);
-            Controls.Add(label1);
+            Controls.Add(textBoxDatum);
+            Controls.Add(textBoxFach);
+            Controls.Add(textBoxName);
+            Controls.Add(labelDatum);
+            Controls.Add(labelFach);
+            Controls.Add(labelName);
+            Controls.Add(labelTitel);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Schulplaner";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
-        private Label label3;
-        private Label label2;
+        private Label labelTitel;
+        private Label labelName;
+        private Label labelFach;
+        private Label labelDatum;
+        private TextBox textBoxName;
+        private TextBox textBoxFach;
+        private TextBox textBoxDatum;
     }
 }
