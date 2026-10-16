@@ -19,4 +19,10 @@ Ich habe heute das Hauptfenster für meinen Schulplaner erstellt und gestaltet. 
 
 - [ ] Einen Button zum Hinzufügen von Terminen erstellen und die eingegebenen Daten beim Anklicken mit einer MessageBox anzeigen.
 
+## 23.10.2026
+- [ ] Prüfen, ob Name und Fach ausgefüllt sind, und bei fehlenden Angaben eine Meldung anzeigen.
+- [ ] Das Datumsfeld durch einen DateTimePicker ersetzen, damit ein gültiges Datum ausgewählt werden kann.
+- [ ] Eine Tabelle mit den Spalten Name, Fach und Datum auf dem Formular einfügen.
+- [ ] Den Hinzufügen-Button so erweitern, dass neue Termine in der Tabelle erscheinen und die Eingabefelder danach geleert werden.
+
 
