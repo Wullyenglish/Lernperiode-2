@@ -31,7 +31,9 @@ Heute haben wir den Schulplaner erweitert: Name und Fach werden vor dem Hinzufü
 
 ## Hausaufgaben vom 16.10.2026
 
-- [ ] In Form1.cs eine Methode erstellen, die alle Termine aus der Tabelle sammelt.
+- [x] In Form1.cs eine Methode erstellen, die alle Termine aus der Tabelle sammelt.
+
+Ich habe eine Methode eingebaut, die alle Termine aus der Tabelle ausliest. Dabei musste ich darauf achten, dass leere Zellen keinen Fehler verursachen. Die Termine werden aber noch nicht gespeichert.
 
 ## 30.10.2026
 - [ ] Die Termine beim Schliessen des Programms in einer JSON-Datei speichern.
