@@ -46,5 +46,27 @@ namespace Schulplaner
             dataGridViewTermine.Rows.Remove(dataGridViewTermine.SelectedRows[0]);
             dataGridViewTermine.ClearSelection();
         }
+
+        private List<string[]> SammleTermine()
+        {
+            List<string[]> termine = new();
+
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                if (zeile.IsNewRow)
+                {
+                    continue;
+                }
+
+                termine.Add(new[]
+                {
+                    zeile.Cells["spalteName"].Value?.ToString() ?? "",
+                    zeile.Cells["spalteFach"].Value?.ToString() ?? "",
+                    zeile.Cells["spalteDatum"].Value?.ToString() ?? ""
+                });
+            }
+
+            return termine;
+        }
     }
 }
