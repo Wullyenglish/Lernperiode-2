@@ -22,9 +22,21 @@ Ich habe heute das Hauptfenster für meinen Schulplaner erstellt und gestaltet. 
 Ich habe einen Hinzufügen-Button erstellt und mit einem Klick-Ereignis verbunden. Beim Anklicken werden Name, Fach und Datum aus den Textfeldern gelesen und in einer MessageBox angezeigt.
 
 ## 23.10.2026
-- [ ] Prüfen, ob Name und Fach ausgefüllt sind, und bei fehlenden Angaben eine Meldung anzeigen.
-- [ ] Das Datumsfeld durch einen DateTimePicker ersetzen, damit ein gültiges Datum ausgewählt werden kann.
-- [ ] Eine Tabelle mit den Spalten Name, Fach und Datum auf dem Formular einfügen.
-- [ ] Den Hinzufügen-Button so erweitern, dass neue Termine in der Tabelle erscheinen und die Eingabefelder danach geleert werden.
+- [x] Prüfen, ob Name und Fach ausgefüllt sind, und bei fehlenden Angaben eine Meldung anzeigen.
+- [x] Das Datumsfeld durch einen DateTimePicker ersetzen, damit ein gültiges Datum ausgewählt werden kann.
+- [x] Eine Tabelle mit den Spalten Name, Fach und Datum auf dem Formular einfügen.
+- [x] Den Hinzufügen-Button so erweitern, dass neue Termine in der Tabelle erscheinen und die Eingabefelder danach geleert werden.
+
+Heute haben wir den Schulplaner erweitert: Name und Fach werden vor dem Hinzufügen geprüft, und das Datum wird mit einem DateTimePicker ausgewählt. Neue Termine erscheinen in einer Tabelle mit den Spalten Name, Fach und Datum. Nach dem Hinzufügen werden die Eingaben zurückgesetzt. Ausserdem haben wir einen Löschen-Button eingebaut und einen Fehler behoben, durch den das Löschen nicht funktionierte. Als Nächstes wollen wir die Termine speichern, damit sie nach einem Neustart erhalten bleiben.
+
+## Hausaufgaben vom 16.10.2026
+
+- [ ] In Form1.cs eine Methode erstellen, die alle Termine aus der Tabelle sammelt.
+
+## 30.10.2026
+- [ ] Die Termine beim Schliessen des Programms in einer JSON-Datei speichern.
+- [ ] Die gespeicherten Termine beim Start laden und wieder in der Tabelle anzeigen.
+- [ ] Testen, ob hinzugefügte und gelöschte Termine nach einem Neustart korrekt angezeigt werden.
+- [ ] Einen Termin in der Tabelle auswählen und seine Daten in die Eingabefelder übernehmen.
 
 
