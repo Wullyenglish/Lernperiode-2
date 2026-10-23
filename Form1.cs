@@ -1,13 +1,50 @@
 namespace Schulplaner
 {
-    internal static class Program
+    public partial class Form1 : Form
     {
-
-        [STAThread]
-        static void Main()
+        public Form1()
         {
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            InitializeComponent();
+        }
+
+        private void buttonHinzufuegen_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxName.Text))
+            {
+                MessageBox.Show("Bitte geben Sie einen Namen ein.", "Fehlende Angabe");
+                textBoxName.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(textBoxFach.Text))
+            {
+                MessageBox.Show("Bitte geben Sie ein Fach ein.", "Fehlende Angabe");
+                textBoxFach.Focus();
+                return;
+            }
+
+            dataGridViewTermine.Rows.Add(
+                textBoxName.Text.Trim(),
+                textBoxFach.Text.Trim(),
+                dateTimePickerDatum.Value.ToShortDateString());
+            dataGridViewTermine.ClearSelection();
+
+            textBoxName.Clear();
+            textBoxFach.Clear();
+            dateTimePickerDatum.Value = DateTime.Today;
+            textBoxName.Focus();
+        }
+
+        private void buttonLoeschen_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTermine.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Bitte wählen Sie einen Termin aus.");
+                return;
+            }
+
+            dataGridViewTermine.Rows.Remove(dataGridViewTermine.SelectedRows[0]);
+            dataGridViewTermine.ClearSelection();
         }
     }
 }
