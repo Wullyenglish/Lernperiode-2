@@ -47,7 +47,6 @@ Heute habe ich meinen Schulplaner erweitert. Ich kann Termine jetzt hinzufügen,
 
 ## 06.11.2026
 - [ ] Abstände, Schriftgrössen und die Anordnung der Elemente verbessern, damit das Fenster übersichtlicher wird.
-- [ ] Ein Suchfeld hinzufügen, mit dem ich Termine nach Name oder Fach finden kann.
 - [ ] Einen Filter einbauen, der nur Prüfungen, Hausaufgaben oder andere Termine anzeigt.
 - [ ] Die Termine nach Datum sortieren, sodass die nächsten Termine oben stehen.
 - [ ] Termine als erledigt markieren und in der Tabelle entsprechend anzeigen.
