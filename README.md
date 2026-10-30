@@ -36,9 +36,19 @@ Heute haben wir den Schulplaner erweitert: Name und Fach werden vor dem Hinzufü
 Ich habe eine Methode eingebaut, die alle Termine aus der Tabelle ausliest. Dabei musste ich darauf achten, dass leere Zellen keinen Fehler verursachen. Die Termine werden aber noch nicht gespeichert.
 
 ## 30.10.2026
-- [ ] Die Termine beim Schliessen des Programms in einer JSON-Datei speichern.
-- [ ] Die gespeicherten Termine beim Start laden und wieder in der Tabelle anzeigen.
-- [ ] Testen, ob hinzugefügte und gelöschte Termine nach einem Neustart korrekt angezeigt werden.
-- [ ] Einen Termin in der Tabelle auswählen und seine Daten in die Eingabefelder übernehmen.
+- [x] Die Termine beim Schliessen des Programms in einer JSON-Datei speichern.
+- [x] Die gespeicherten Termine beim Start laden und wieder in der Tabelle anzeigen.
+- [x] Testen, ob hinzugefügte und gelöschte Termine nach einem Neustart korrekt angezeigt werden.
+- [x] Einen Termin in der Tabelle auswählen und seine Daten in die Eingabefelder übernehmen.
+Heute habe ich meinen Schulplaner erweitert. Ich kann Termine jetzt hinzufügen, bearbeiten und löschen. Sie werden gespeichert und beim nächsten Start wieder geladen. Ausserdem habe ich einen Kalender und Erinnerungen für anstehende Termine eingebaut.
 
+## Hausaufgaben vom 30.10.2026
+- [ ] Ein einheitliches Farbschema für das Fenster, die Buttons und die Tabelle gestalten.
+
+## 06.11.2026
+- [ ] Abstände, Schriftgrössen und die Anordnung der Elemente verbessern, damit das Fenster übersichtlicher wird.
+- [ ] Ein Suchfeld hinzufügen, mit dem ich Termine nach Name oder Fach finden kann.
+- [ ] Einen Filter einbauen, der nur Prüfungen, Hausaufgaben oder andere Termine anzeigt.
+- [ ] Die Termine nach Datum sortieren, sodass die nächsten Termine oben stehen.
+- [ ] Termine als erledigt markieren und in der Tabelle entsprechend anzeigen.
 
