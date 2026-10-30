@@ -28,9 +28,9 @@ namespace Schulplaner
             Shown += Form1_Shown;
         }
 
-        private void buttonHinzufuegen_Click(object sender, EventArgs e)
+        private void buttonHinzufügen_Click(object sender, EventArgs e)
         {
-            if (!EingabenGueltig())
+            if (!EingabenGültig())
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Schulplaner
             AktualisiereKalender();
         }
 
-        private void buttonLoeschen_Click(object sender, EventArgs e)
+        private void buttonLöschen_Click(object sender, EventArgs e)
         {
             if (dataGridViewTermine.SelectedRows.Count == 0)
             {
@@ -68,7 +68,7 @@ namespace Schulplaner
                 return;
             }
 
-            if (!EingabenGueltig())
+            if (!EingabenGültig())
             {
                 return;
             }
@@ -117,7 +117,7 @@ namespace Schulplaner
             ZeigeErinnerungen(false);
         }
 
-        private bool EingabenGueltig()
+        private bool EingabenGültig()
         {
             if (string.IsNullOrWhiteSpace(textBoxName.Text))
             {
@@ -242,12 +242,12 @@ namespace Schulplaner
         private void AktualisiereTagesliste()
         {
             listBoxTagesTermine.Items.Clear();
-            DateTime ausgewaehlterTag = monthCalendarTermine.SelectionStart.Date;
+            DateTime ausgewählterTag = monthCalendarTermine.SelectionStart.Date;
 
             foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
             {
                 if (VersucheDatum(zeile.Cells["spalteDatum"].Value?.ToString(), out DateTime datum)
-                    && datum.Date == ausgewaehlterTag)
+                    && datum.Date == ausgewählterTag)
                 {
                     string art = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
                     string name = zeile.Cells["spalteName"].Value?.ToString() ?? "";
