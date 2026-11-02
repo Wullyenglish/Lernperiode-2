@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Globalization;
 using System.Text.Json;
 
@@ -5,8 +6,9 @@ namespace Schulplaner
 {
     public partial class Form1 : Form
     {
+        private const string StatusOffen = "Offen";
+        private const string StatusErledigt = "Erledigt";
         private readonly string dateiPfad;
-
         private bool ladenFehlgeschlagen;
 
         public Form1() : this(Path.Combine(
@@ -20,9 +22,15 @@ namespace Schulplaner
         {
             this.dateiPfad = dateiPfad;
             InitializeComponent();
+            GestalteOberfläche();
             LadeTermine();
+            SortiereTermine();
+            AktualisiereZeilenfarben();
+            AktualisiereFilter();
             AktualisiereKalender();
             dataGridViewTermine.SelectionChanged += dataGridViewTermine_SelectionChanged;
+
+            comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             monthCalendarTermine.DateSelected += monthCalendarTermine_DateSelected;
             FormClosing += Form1_FormClosing;
             Shown += Form1_Shown;
@@ -38,12 +46,12 @@ namespace Schulplaner
             dataGridViewTermine.Rows.Add(
                 textBoxName.Text.Trim(),
                 textBoxFach.Text.Trim(),
-                dateTimePickerDatum.Value.ToShortDateString(),
-                comboBoxArt.SelectedItem?.ToString() ?? "Anderer Termin");
+                dateTimePickerDatum.Value.Date,
+                comboBoxArt.SelectedItem?.ToString() ?? "Anderer Termin",
+                StatusOffen);
 
-            dataGridViewTermine.ClearSelection();
+            AktualisiereAnsicht();
             LeereEingaben();
-            AktualisiereKalender();
         }
 
         private void buttonLöschen_Click(object sender, EventArgs e)
@@ -55,9 +63,8 @@ namespace Schulplaner
             }
 
             dataGridViewTermine.Rows.Remove(dataGridViewTermine.SelectedRows[0]);
-            dataGridViewTermine.ClearSelection();
+            AktualisiereAnsicht();
             LeereEingaben();
-            AktualisiereKalender();
         }
 
         private void buttonBearbeiten_Click(object sender, EventArgs e)
@@ -76,12 +83,26 @@ namespace Schulplaner
             DataGridViewRow zeile = dataGridViewTermine.SelectedRows[0];
             zeile.Cells["spalteName"].Value = textBoxName.Text.Trim();
             zeile.Cells["spalteFach"].Value = textBoxFach.Text.Trim();
-            zeile.Cells["spalteDatum"].Value = dateTimePickerDatum.Value.ToShortDateString();
+            zeile.Cells["spalteDatum"].Value = dateTimePickerDatum.Value.Date;
             zeile.Cells["spalteArt"].Value = comboBoxArt.SelectedItem?.ToString() ?? "Anderer Termin";
 
-            dataGridViewTermine.ClearSelection();
+            AktualisiereAnsicht();
             LeereEingaben();
-            AktualisiereKalender();
+        }
+
+        private void buttonStatus_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewTermine.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Bitte wählen Sie einen Termin aus.");
+                return;
+            }
+
+            DataGridViewRow zeile = dataGridViewTermine.SelectedRows[0];
+            string status = zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen;
+            zeile.Cells["spalteStatus"].Value = status == StatusErledigt ? StatusOffen : StatusErledigt;
+            AktualisiereZeilenfarben();
+            AktualisiereTagesliste();
         }
 
         private void dataGridViewTermine_SelectionChanged(object? sender, EventArgs e)
@@ -96,10 +117,16 @@ namespace Schulplaner
             textBoxFach.Text = zeile.Cells["spalteFach"].Value?.ToString() ?? "";
             comboBoxArt.SelectedItem = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
 
-            if (VersucheDatum(zeile.Cells["spalteDatum"].Value?.ToString(), out DateTime datum))
+            if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum))
             {
                 dateTimePickerDatum.Value = datum;
             }
+        }
+
+
+        private void comboBoxFilter_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            AktualisiereFilter();
         }
 
         private void monthCalendarTermine_DateSelected(object? sender, DateRangeEventArgs e)
@@ -145,6 +172,52 @@ namespace Schulplaner
             textBoxName.Focus();
         }
 
+        private void AktualisiereAnsicht()
+        {
+            SortiereTermine();
+            AktualisiereZeilenfarben();
+            AktualisiereFilter();
+            AktualisiereKalender();
+        }
+
+        private void SortiereTermine()
+        {
+            if (dataGridViewTermine.Rows.Count > 1)
+            {
+                dataGridViewTermine.Sort(spalteDatum, ListSortDirection.Ascending);
+            }
+
+            spalteDatum.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+            dataGridViewTermine.ClearSelection();
+        }
+
+        private void AktualisiereFilter()
+        {
+            string filter = comboBoxFilter.SelectedItem?.ToString() ?? "Alle";
+            dataGridViewTermine.CurrentCell = null;
+            dataGridViewTermine.ClearSelection();
+
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                string art = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
+                zeile.Visible = filter == "Alle" || art == filter;
+            }
+        }
+
+        private void AktualisiereZeilenfarben()
+        {
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                bool erledigt = zeile.Cells["spalteStatus"].Value?.ToString() == StatusErledigt;
+                zeile.DefaultCellStyle.BackColor = erledigt
+                    ? Color.FromArgb(229, 241, 232)
+                    : zeile.Index % 2 == 0 ? Color.White : Color.FromArgb(247, 250, 252);
+                zeile.DefaultCellStyle.ForeColor = erledigt
+                    ? Color.FromArgb(72, 107, 82)
+                    : Color.FromArgb(36, 51, 70);
+            }
+        }
+
         private List<string[]> SammleTermine()
         {
             List<string[]> termine = new();
@@ -156,12 +229,18 @@ namespace Schulplaner
                     continue;
                 }
 
+                if (!VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum))
+                {
+                    throw new JsonException("Ein Termin hat kein gültiges Datum.");
+                }
+
                 termine.Add(new[]
                 {
                     zeile.Cells["spalteName"].Value?.ToString() ?? "",
                     zeile.Cells["spalteFach"].Value?.ToString() ?? "",
-                    zeile.Cells["spalteDatum"].Value?.ToString() ?? "",
-                    zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin"
+                    datum.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin",
+                    zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen
                 });
             }
 
@@ -178,8 +257,9 @@ namespace Schulplaner
                     dataGridViewTermine.Rows.Add(
                         termin[0],
                         termin[1],
-                        datum.ToShortDateString(),
-                        termin.Length == 4 ? termin[3] : "Anderer Termin");
+                        datum.Date,
+                        termin.Length >= 4 ? termin[3] : "Anderer Termin",
+                        termin.Length == 5 && termin[4] == StatusErledigt ? StatusErledigt : StatusOffen);
                 }
 
                 dataGridViewTermine.ClearSelection();
@@ -206,7 +286,7 @@ namespace Schulplaner
 
             foreach (string[] termin in termine)
             {
-                if (termin == null || (termin.Length != 3 && termin.Length != 4)
+                if (termin == null || (termin.Length != 3 && termin.Length != 4 && termin.Length != 5)
                     || !VersucheDatum(termin[2], out _))
                 {
                     throw new JsonException("Ein gespeicherter Termin ist unvollständig.");
@@ -215,8 +295,16 @@ namespace Schulplaner
 
             return termine;
         }
-        private static bool VersucheDatum(string? text, out DateTime datum)
+
+        private static bool VersucheDatum(object? wert, out DateTime datum)
         {
+            if (wert is DateTime direktesDatum)
+            {
+                datum = direktesDatum;
+                return true;
+            }
+
+            string? text = wert?.ToString();
             return DateTime.TryParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out datum)
                 || DateTime.TryParse(text, CultureInfo.CurrentCulture, DateTimeStyles.None, out datum)
                 || DateTime.TryParse(text, CultureInfo.GetCultureInfo("de-CH"), DateTimeStyles.None, out datum);
@@ -228,7 +316,7 @@ namespace Schulplaner
 
             foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
             {
-                if (VersucheDatum(zeile.Cells["spalteDatum"].Value?.ToString(), out DateTime datum))
+                if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum))
                 {
                     daten.Add(datum.Date);
                 }
@@ -246,13 +334,14 @@ namespace Schulplaner
 
             foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
             {
-                if (VersucheDatum(zeile.Cells["spalteDatum"].Value?.ToString(), out DateTime datum)
+                if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum)
                     && datum.Date == ausgewählterTag)
                 {
                     string art = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
                     string name = zeile.Cells["spalteName"].Value?.ToString() ?? "";
                     string fach = zeile.Cells["spalteFach"].Value?.ToString() ?? "";
-                    listBoxTagesTermine.Items.Add($"{art}: {name} ({fach})");
+                    string status = zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen;
+                    listBoxTagesTermine.Items.Add($"{art}: {name} ({fach}) – {status}");
                 }
             }
         }
@@ -265,8 +354,9 @@ namespace Schulplaner
 
             foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
             {
-                if (!VersucheDatum(zeile.Cells["spalteDatum"].Value?.ToString(), out DateTime datum)
-                    || datum.Date < heute || datum.Date > letzterTag)
+                if (!VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum)
+                    || datum.Date < heute || datum.Date > letzterTag
+                    || zeile.Cells["spalteStatus"].Value?.ToString() == StatusErledigt)
                 {
                     continue;
                 }
@@ -283,8 +373,60 @@ namespace Schulplaner
             }
             else if (auchWennLeer)
             {
-                MessageBox.Show("In den nächsten 7 Tagen stehen keine Termine an.", "Erinnerungen");
+                MessageBox.Show("In den nächsten 7 Tagen stehen keine offenen Termine an.", "Erinnerungen");
             }
+        }
+
+        private void GestalteOberfläche()
+        {
+            Color dunkelblau = Color.FromArgb(35, 56, 78);
+            BackColor = Color.FromArgb(244, 248, 251);
+            ForeColor = dunkelblau;
+            MinimumSize = new Size(1120, 720);
+            StartPosition = FormStartPosition.CenterScreen;
+            labelTitel.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            labelTitel.ForeColor = dunkelblau;
+
+            foreach (Label beschriftung in new[] { labelName, labelFach, labelDatum, labelArt, labelFilter, labelKalender, labelTagesTermine })
+            {
+                beschriftung.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                beschriftung.ForeColor = dunkelblau;
+            }
+
+            foreach (Button knopf in new[] { buttonHinzufügen, buttonLöschen, buttonBearbeiten, buttonStatus, buttonErinnerungen })
+            {
+                knopf.FlatStyle = FlatStyle.Flat;
+                knopf.FlatAppearance.BorderSize = 0;
+                knopf.ForeColor = Color.White;
+                knopf.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+                knopf.Cursor = Cursors.Hand;
+                knopf.UseVisualStyleBackColor = false;
+            }
+
+            buttonHinzufügen.BackColor = Color.FromArgb(28, 128, 122);
+            buttonBearbeiten.BackColor = Color.FromArgb(54, 108, 165);
+            buttonLöschen.BackColor = Color.FromArgb(177, 73, 78);
+            buttonStatus.BackColor = Color.FromArgb(75, 133, 88);
+            buttonErinnerungen.BackColor = Color.FromArgb(166, 108, 49);
+
+            dataGridViewTermine.BackgroundColor = Color.White;
+            dataGridViewTermine.BorderStyle = BorderStyle.None;
+            dataGridViewTermine.GridColor = Color.FromArgb(219, 229, 236);
+            dataGridViewTermine.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewTermine.EnableHeadersVisualStyles = false;
+            dataGridViewTermine.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewTermine.ColumnHeadersHeight = 38;
+            dataGridViewTermine.ColumnHeadersDefaultCellStyle.BackColor = dunkelblau;
+            dataGridViewTermine.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewTermine.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            dataGridViewTermine.DefaultCellStyle.SelectionBackColor = Color.FromArgb(207, 226, 239);
+            dataGridViewTermine.DefaultCellStyle.SelectionForeColor = dunkelblau;
+            dataGridViewTermine.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dataGridViewTermine.RowTemplate.Height = 34;
+            listBoxTagesTermine.BackColor = Color.White;
+            listBoxTagesTermine.Font = new Font("Segoe UI", 9.5F);
+            monthCalendarTermine.TitleBackColor = dunkelblau;
+            monthCalendarTermine.TitleForeColor = Color.White;
         }
 
         private static void SchreibeTermineInDatei(string pfad, List<string[]> termine)
@@ -295,6 +437,7 @@ namespace Schulplaner
                 new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(pfad, json);
         }
+
         private void Form1_FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (ladenFehlgeschlagen)
@@ -306,7 +449,7 @@ namespace Schulplaner
             {
                 SchreibeTermineInDatei(dateiPfad, SammleTermine());
             }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
             {
                 MessageBox.Show($"Die Termine konnten nicht gespeichert werden.\n{ex.Message}", "Fehler beim Speichern");
                 e.Cancel = true;
