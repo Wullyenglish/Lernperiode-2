@@ -43,11 +43,13 @@ Ich habe eine Methode eingebaut, die alle Termine aus der Tabelle ausliest. Dabe
 Heute habe ich meinen Schulplaner erweitert. Ich kann Termine jetzt hinzufügen, bearbeiten und löschen. Sie werden gespeichert und beim nächsten Start wieder geladen. Ausserdem habe ich einen Kalender und Erinnerungen für anstehende Termine eingebaut.
 
 ## Hausaufgaben vom 30.10.2026
-- [ ] Ein einheitliches Farbschema für das Fenster, die Buttons und die Tabelle gestalten.
+- [x] Ein einheitliches Farbschema für das Fenster, die Buttons und die Tabelle gestalten.
 
 ## 06.11.2026
-- [ ] Abstände, Schriftgrössen und die Anordnung der Elemente verbessern, damit das Fenster übersichtlicher wird.
-- [ ] Einen Filter einbauen, der nur Prüfungen, Hausaufgaben oder andere Termine anzeigt.
-- [ ] Die Termine nach Datum sortieren, sodass die nächsten Termine oben stehen.
-- [ ] Termine als erledigt markieren und in der Tabelle entsprechend anzeigen.
+- [x] Abstände, Schriftgrössen und die Anordnung der Elemente verbessern, damit das Fenster übersichtlicher wird.
+- [x] Einen Filter einbauen, der nur Prüfungen, Hausaufgaben oder andere Termine anzeigt.
+- [x] Die Termine nach Datum sortieren, sodass die nächsten Termine oben stehen.
+- [x] Termine als erledigt markieren und in der Tabelle entsprechend anzeigen.
 
+Ich habe die Hausaufgaben und die Aufgaben vom für den 06.11.2026 beide am 01.11.2026 gemacht.
+Ich habe die Farben, Schriftgrössen und Abstände im Schulplaner verbessert. Ausserdem kann ich Termine nach Art filtern, nach Datum sortieren und als erledigt markieren. Der Status bleibt auch nach einem Neustart gespeichert.
