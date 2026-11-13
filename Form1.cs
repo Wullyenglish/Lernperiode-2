@@ -1,4 +1,3 @@
-
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.Json;
@@ -31,6 +30,7 @@ namespace Schulplaner
             AktualisiereZeilenfarben();
             AktualisiereFilter();
             AktualisiereKalender();
+            AktualisiereZähler();
             dataGridViewTermine.SelectionChanged += dataGridViewTermine_SelectionChanged;
 
             comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
@@ -134,6 +134,7 @@ namespace Schulplaner
             AktualisiereZeilenfarben();
             AktualisiereFilter();
             AktualisiereTagesliste();
+            AktualisiereZähler();
         }
 
         private void dataGridViewTermine_SelectionChanged(object? sender, EventArgs e)
@@ -211,6 +212,34 @@ namespace Schulplaner
             AktualisiereZeilenfarben();
             AktualisiereFilter();
             AktualisiereKalender();
+            AktualisiereZähler();
+        }
+
+        private void AktualisiereZähler()
+        {
+            int offen = 0;
+            int erledigt = 0;
+            int überfällig = 0;
+
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                if (zeile.Cells["spalteStatus"].Value?.ToString() == StatusErledigt)
+                {
+                    erledigt++;
+                    continue;
+                }
+
+                offen++;
+                if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum)
+                    && datum.Date < DateTime.Today)
+                {
+                    überfällig++;
+                }
+            }
+
+            labelOffen.Text = $"Offen: {offen}";
+            labelErledigt.Text = $"Erledigt: {erledigt}";
+            labelÜberfällig.Text = $"Überfällig: {überfällig}";
         }
 
         private void SortiereTermine()
@@ -437,6 +466,15 @@ namespace Schulplaner
             StartPosition = FormStartPosition.CenterScreen;
             labelTitel.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             labelTitel.ForeColor = dunkelblau;
+
+            foreach (Label zähler in new[] { labelOffen, labelErledigt, labelÜberfällig })
+            {
+                zähler.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            }
+
+            labelOffen.ForeColor = dunkelblau;
+            labelErledigt.ForeColor = Color.FromArgb(72, 107, 82);
+            labelÜberfällig.ForeColor = Color.FromArgb(177, 73, 78);
 
             foreach (Label beschriftung in new[] { labelName, labelFach, labelDatum, labelArt, labelFilter, labelKalender, labelTagesTermine })
             {
