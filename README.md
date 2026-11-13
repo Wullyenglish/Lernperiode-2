@@ -57,6 +57,6 @@ Ich habe die Farben, Schriftgrössen und Abstände im Schulplaner verbessert. Au
 ## 13.11.2026
 
 - [x] Löschen absichern: Den Terminnamen in der Bestätigung anzeigen und «Ja» und «Nein» testen.
-- [ ] Statusfilter: Nach «Offen» oder «Erledigt» filtern und den Filter mit der Terminart kombinieren.
+- [x] Statusfilter: Nach «Offen» oder «Erledigt» filtern und den Filter mit der Terminart kombinieren.
 - [ ] Überfällige Termine: Offene Termine vor heute farblich markieren und die Farbe unter der Tabelle erklären.
 - [ ] Notizen: Ein mehrzeiliges Notizfeld einbauen und prüfen, ob die Notiz nach einem Neustart wieder angezeigt wird.
