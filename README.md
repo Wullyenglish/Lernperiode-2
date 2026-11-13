@@ -65,7 +65,9 @@ Heute habe ich überfällige Termine farblich markiert und ein Notizfeld für me
 
 ## Hausaufgaben vom 13.11.2026
 
-- [ ] Über der Tabelle anzeigen, wie viele Termine offen, erledigt und überfällig sind.
+- [x] Über der Tabelle anzeigen, wie viele Termine offen, erledigt und überfällig sind.
+
+Ich habe über der Tabelle Zähler für offene, erledigte und überfällige Termine eingebaut. Sie aktualisieren sich automatisch, wenn du Termine hinzufügst, änderst, löschst oder ihren Status wechselst.
 
 ## 20.11.2026
 
