@@ -65,4 +65,11 @@ Heute habe ich überfällige Termine farblich markiert und ein Notizfeld für me
 
 ## Hausaufgaben vom 13.11.2026
 
+- [ ] Über der Tabelle anzeigen, wie viele Termine offen, erledigt und überfällig sind.
 
+## 20.11.2026
+
+- [ ] Beim Hinzufügen vor einem doppelten Termin mit gleichem Namen, Fach und Datum warnen.
+- [ ] Einen Button einbauen, mit dem ich meine Termine als CSV-Datei exportieren kann.
+- [ ] Für Termine eine Priorität wie «Niedrig», «Mittel» oder «Hoch» hinzufügen und speichern.
+- [ ] Das letzte Löschen rückgängig machen können und prüfen, ob der richtige Termin zurückkommt.
