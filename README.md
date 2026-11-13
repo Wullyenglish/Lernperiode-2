@@ -53,3 +53,10 @@ Heute habe ich meinen Schulplaner erweitert. Ich kann Termine jetzt hinzufügen,
 
 Ich habe die Hausaufgaben und die Aufgaben vom für den 06.11.2026 beide am 01.11.2026 gemacht.
 Ich habe die Farben, Schriftgrössen und Abstände im Schulplaner verbessert. Ausserdem kann ich Termine nach Art filtern, nach Datum sortieren und als erledigt markieren. Der Status bleibt auch nach einem Neustart gespeichert.
+
+## 13.11.2026
+
+- [ ] Löschen absichern: Den Terminnamen in der Bestätigung anzeigen und «Ja» und «Nein» testen.
+- [ ] Statusfilter: Nach «Offen» oder «Erledigt» filtern und den Filter mit der Terminart kombinieren.
+- [ ] Überfällige Termine: Offene Termine vor heute farblich markieren und die Farbe unter der Tabelle erklären.
+- [ ] Notizen: Ein mehrzeiliges Notizfeld einbauen und prüfen, ob die Notiz nach einem Neustart wieder angezeigt wird.
