@@ -49,6 +49,9 @@ namespace Schulplaner
             label1 = new Label();
             labelNotiz = new Label();
             textBoxNotiz = new TextBox();
+            labelOffen = new Label();
+            labelErledigt = new Label();
+            labelÜberfällig = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTermine).BeginInit();
             SuspendLayout();
             // 
@@ -223,14 +226,14 @@ namespace Schulplaner
             dataGridViewTermine.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewTermine.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewTermine.Columns.AddRange(new DataGridViewColumn[] { spalteName, spalteFach, spalteDatum, spalteArt, spalteStatus, spalteNotiz });
-            dataGridViewTermine.Location = new Point(30, 405);
+            dataGridViewTermine.Location = new Point(30, 445);
             dataGridViewTermine.MultiSelect = false;
             dataGridViewTermine.Name = "dataGridViewTermine";
             dataGridViewTermine.ReadOnly = true;
             dataGridViewTermine.RowHeadersVisible = false;
             dataGridViewTermine.RowHeadersWidth = 62;
             dataGridViewTermine.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewTermine.Size = new Size(760, 240);
+            dataGridViewTermine.Size = new Size(760, 200);
             dataGridViewTermine.TabIndex = 16;
             // 
             // spalteName
@@ -337,12 +340,33 @@ namespace Schulplaner
             textBoxNotiz.ScrollBars = ScrollBars.Vertical;
             textBoxNotiz.Size = new Size(340, 180);
             textBoxNotiz.TabIndex = 24;
+            labelOffen.AutoSize = true;
+            labelOffen.Location = new Point(30, 410);
+            labelOffen.Name = "labelOffen";
+            labelOffen.Size = new Size(79, 25);
+            labelOffen.TabIndex = 25;
+            labelOffen.Text = "Offen: 0";
+            labelErledigt.AutoSize = true;
+            labelErledigt.Location = new Point(200, 410);
+            labelErledigt.Name = "labelErledigt";
+            labelErledigt.Size = new Size(96, 25);
+            labelErledigt.TabIndex = 26;
+            labelErledigt.Text = "Erledigt: 0";
+            labelÜberfällig.AutoSize = true;
+            labelÜberfällig.Location = new Point(390, 410);
+            labelÜberfällig.Name = "labelÜberfällig";
+            labelÜberfällig.Size = new Size(118, 25);
+            labelÜberfällig.TabIndex = 27;
+            labelÜberfällig.Text = "Überfällig: 0";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 690);
+            Controls.Add(labelÜberfällig);
+            Controls.Add(labelErledigt);
+            Controls.Add(labelOffen);
             Controls.Add(textBoxNotiz);
             Controls.Add(labelNotiz);
             Controls.Add(label1);
@@ -408,5 +432,8 @@ namespace Schulplaner
         private Label label1;
         private Label labelNotiz;
         private TextBox textBoxNotiz;
+        private Label labelOffen;
+        private Label labelErledigt;
+        private Label labelÜberfällig;
     }
 }
