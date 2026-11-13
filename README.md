@@ -59,4 +59,10 @@ Ich habe die Farben, Schriftgrössen und Abstände im Schulplaner verbessert. Au
 - [x] Löschen absichern: Den Terminnamen in der Bestätigung anzeigen und «Ja» und «Nein» testen.
 - [x] Statusfilter: Nach «Offen» oder «Erledigt» filtern und den Filter mit der Terminart kombinieren.
 - [x] Überfällige Termine: Offene Termine vor heute farblich markieren und die Farbe unter der Tabelle erklären.
-- [ ] Notizen: Ein mehrzeiliges Notizfeld einbauen und prüfen, ob die Notiz nach einem Neustart wieder angezeigt wird.
+- [x] Notizen: Ein mehrzeiliges Notizfeld einbauen und prüfen, ob die Notiz nach einem Neustart wieder angezeigt wird.
+
+Heute habe ich überfällige Termine farblich markiert und ein Notizfeld für meine Termine ergänzt. Die Notiz verschwand zuerst beim Wechseln zwischen Terminen, weil sie beim Ändern noch nicht übernommen wurde. Danach habe ich das Speichern und Laden der Notizen ergänzt und geprüft, ob sie nach einem Neustart erhalten bleiben.
+
+## Hausaufgaben vom 13.11.2026
+
+
