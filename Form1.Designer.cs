@@ -36,6 +36,8 @@ namespace Schulplaner
             buttonLöschen = new Button();
             buttonStatus = new Button();
             buttonErinnerungen = new Button();
+            buttonCsvExport = new Button();
+            buttonRückgängig = new Button();
             dataGridViewTermine = new DataGridView();
             spalteName = new DataGridViewTextBoxColumn();
             spalteFach = new DataGridViewTextBoxColumn();
@@ -43,6 +45,7 @@ namespace Schulplaner
             spalteArt = new DataGridViewTextBoxColumn();
             spalteStatus = new DataGridViewTextBoxColumn();
             spalteNotiz = new DataGridViewTextBoxColumn();
+            spaltePriorität = new DataGridViewTextBoxColumn();
             monthCalendarTermine = new MonthCalendar();
             listBoxTagesTermine = new ListBox();
             comboBoxStatus = new ComboBox();
@@ -52,6 +55,8 @@ namespace Schulplaner
             labelOffen = new Label();
             labelErledigt = new Label();
             labelÜberfällig = new Label();
+            labelPriorität = new Label();
+            comboBoxPriorität = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTermine).BeginInit();
             SuspendLayout();
             // 
@@ -215,6 +220,19 @@ namespace Schulplaner
             buttonErinnerungen.TabIndex = 15;
             buttonErinnerungen.Text = "Erinnerungen";
             buttonErinnerungen.Click += buttonErinnerungen_Click;
+            buttonCsvExport.Location = new Point(30, 350);
+            buttonCsvExport.Name = "buttonCsvExport";
+            buttonCsvExport.Size = new Size(100, 38);
+            buttonCsvExport.TabIndex = 28;
+            buttonCsvExport.Text = "CSV-Export";
+            buttonCsvExport.Click += buttonCsvExport_Click;
+            buttonRückgängig.Enabled = false;
+            buttonRückgängig.Location = new Point(600, 401);
+            buttonRückgängig.Name = "buttonRückgängig";
+            buttonRückgängig.Size = new Size(190, 37);
+            buttonRückgängig.TabIndex = 31;
+            buttonRückgängig.Text = "Löschen rückgängig";
+            buttonRückgängig.Click += buttonRückgängig_Click;
             // 
             // dataGridViewTermine
             // 
@@ -225,7 +243,7 @@ namespace Schulplaner
             dataGridViewTermine.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewTermine.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewTermine.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewTermine.Columns.AddRange(new DataGridViewColumn[] { spalteName, spalteFach, spalteDatum, spalteArt, spalteStatus, spalteNotiz });
+            dataGridViewTermine.Columns.AddRange(new DataGridViewColumn[] { spalteName, spalteFach, spalteDatum, spalteArt, spalteStatus, spalteNotiz, spaltePriorität });
             dataGridViewTermine.Location = new Point(30, 445);
             dataGridViewTermine.MultiSelect = false;
             dataGridViewTermine.Name = "dataGridViewTermine";
@@ -288,6 +306,12 @@ namespace Schulplaner
             spalteNotiz.Name = "spalteNotiz";
             spalteNotiz.ReadOnly = true;
             spalteNotiz.SortMode = DataGridViewColumnSortMode.NotSortable;
+            spaltePriorität.FillWeight = 18F;
+            spaltePriorität.HeaderText = "Priorität";
+            spaltePriorität.MinimumWidth = 8;
+            spaltePriorität.Name = "spaltePriorität";
+            spaltePriorität.ReadOnly = true;
+            spaltePriorität.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // monthCalendarTermine
             // 
@@ -338,8 +362,22 @@ namespace Schulplaner
             textBoxNotiz.Multiline = true;
             textBoxNotiz.Name = "textBoxNotiz";
             textBoxNotiz.ScrollBars = ScrollBars.Vertical;
-            textBoxNotiz.Size = new Size(340, 180);
+            textBoxNotiz.Size = new Size(340, 130);
             textBoxNotiz.TabIndex = 24;
+            labelPriorität.AutoSize = true;
+            labelPriorität.Location = new Point(450, 248);
+            labelPriorität.Name = "labelPriorität";
+            labelPriorität.Size = new Size(78, 25);
+            labelPriorität.TabIndex = 29;
+            labelPriorität.Text = "Priorität";
+            comboBoxPriorität.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPriorität.FormattingEnabled = true;
+            comboBoxPriorität.Items.AddRange(new object[] { "Niedrig", "Mittel", "Hoch" });
+            comboBoxPriorität.Location = new Point(530, 245);
+            comboBoxPriorität.Name = "comboBoxPriorität";
+            comboBoxPriorität.SelectedIndex = 1;
+            comboBoxPriorität.Size = new Size(260, 33);
+            comboBoxPriorität.TabIndex = 30;
             labelOffen.AutoSize = true;
             labelOffen.Location = new Point(30, 410);
             labelOffen.Name = "labelOffen";
@@ -364,6 +402,9 @@ namespace Schulplaner
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 690);
+            Controls.Add(buttonRückgängig);
+            Controls.Add(comboBoxPriorität);
+            Controls.Add(labelPriorität);
             Controls.Add(labelÜberfällig);
             Controls.Add(labelErledigt);
             Controls.Add(labelOffen);
@@ -375,6 +416,7 @@ namespace Schulplaner
             Controls.Add(monthCalendarTermine);
             Controls.Add(dataGridViewTermine);
             Controls.Add(buttonErinnerungen);
+            Controls.Add(buttonCsvExport);
             Controls.Add(buttonStatus);
             Controls.Add(buttonLöschen);
             Controls.Add(buttonBearbeiten);
@@ -419,6 +461,8 @@ namespace Schulplaner
         private Button buttonLöschen;
         private Button buttonStatus;
         private Button buttonErinnerungen;
+        private Button buttonCsvExport;
+        private Button buttonRückgängig;
         private DataGridView dataGridViewTermine;
         private DataGridViewTextBoxColumn spalteName;
         private DataGridViewTextBoxColumn spalteFach;
@@ -426,6 +470,7 @@ namespace Schulplaner
         private DataGridViewTextBoxColumn spalteArt;
         private DataGridViewTextBoxColumn spalteStatus;
         private DataGridViewTextBoxColumn spalteNotiz;
+        private DataGridViewTextBoxColumn spaltePriorität;
         private MonthCalendar monthCalendarTermine;
         private ListBox listBoxTagesTermine;
         private ComboBox comboBoxStatus;
@@ -435,5 +480,7 @@ namespace Schulplaner
         private Label labelOffen;
         private Label labelErledigt;
         private Label labelÜberfällig;
+        private Label labelPriorität;
+        private ComboBox comboBoxPriorität;
     }
 }
