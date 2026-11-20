@@ -75,3 +75,5 @@ Ich habe über der Tabelle Zähler für offene, erledigte und überfällige Term
 - [x] Einen Button einbauen, mit dem ich meine Termine als CSV-Datei exportieren kann.
 - [x] Für Termine eine Priorität wie «Niedrig», «Mittel» oder «Hoch» hinzufügen und speichern.
 - [x] Das letzte Löschen rückgängig machen können und prüfen, ob der richtige Termin zurückkommt.
+
+Ich habe eine Warnung vor doppelten Terminen und einen CSV-Export eingebaut. Ausserdem kann ich Terminen eine Priorität geben und speichern sowie den zuletzt gelöschten Termin wiederherstellen.
