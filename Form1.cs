@@ -26,6 +26,7 @@ namespace Schulplaner
             InitializeComponent();
             comboBoxFilter.SelectedIndex = 0;
             comboBoxStatus.SelectedIndex = 0;
+            comboBoxPrioritätsFilter.SelectedIndex = 0;
             GestalteOberfläche();
             LadeTermine();
             SortiereTermine();
@@ -37,6 +38,7 @@ namespace Schulplaner
 
             comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             comboBoxStatus.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
+            comboBoxPrioritätsFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             monthCalendarTermine.DateSelected += monthCalendarTermine_DateSelected;
             FormClosing += Form1_FormClosing;
             Shown += Form1_Shown;
@@ -342,8 +344,9 @@ namespace Schulplaner
 
         private void AktualisiereFilter()
         {
-            string artFilter = comboBoxFilter.SelectedItem?.ToString() ?? "Alle";
-            string statusFilter = comboBoxStatus.SelectedItem?.ToString() ?? "Alle";
+            string artFilter = comboBoxFilter.Text;
+            string statusFilter = comboBoxStatus.Text;
+            string prioritätsFilter = comboBoxPrioritätsFilter.Text;
             dataGridViewTermine.CurrentCell = null;
             dataGridViewTermine.ClearSelection();
 
@@ -351,8 +354,11 @@ namespace Schulplaner
             {
                 string art = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
                 string status = zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen;
-                zeile.Visible = (artFilter == "Alle" || art == artFilter)
-                    && (statusFilter == "Alle" || status == statusFilter);
+                string priorität = zeile.Cells["spaltePriorität"].Value?.ToString() ?? "Mittel";
+                bool artPasst = artFilter == "Alle" || art == artFilter;
+                bool statusPasst = statusFilter == "Alle" || status == statusFilter;
+                bool prioritätPasst = prioritätsFilter == "Alle" || priorität == prioritätsFilter;
+                zeile.Visible = artPasst && statusPasst && prioritätPasst;
             }
         }
 
