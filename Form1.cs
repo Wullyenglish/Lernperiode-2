@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Globalization;
+using System.Text;
 using System.Text.Json;
 
 namespace Schulplaner
@@ -10,6 +11,7 @@ namespace Schulplaner
         private const string StatusErledigt = "Erledigt";
         private readonly string dateiPfad;
         private bool ladenFehlgeschlagen;
+        private DataGridViewRow? letzterGelöschterTermin;
 
         public Form1() : this(Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -47,13 +49,25 @@ namespace Schulplaner
                 return;
             }
 
+            if (TerminBereitsVorhanden())
+            {
+                MessageBox.Show(
+                    this,
+                    "Ein Termin mit diesem Namen, Fach und Datum ist bereits vorhanden.",
+                    "Doppelter Termin",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             dataGridViewTermine.Rows.Add(
                 textBoxName.Text.Trim(),
                 textBoxFach.Text.Trim(),
                 dateTimePickerDatum.Value.Date,
                 comboBoxArt.SelectedItem?.ToString() ?? "Anderer Termin",
                 StatusOffen,
-                textBoxNotiz.Text.Trim());
+                textBoxNotiz.Text.Trim(),
+                comboBoxPriorität.Text);
 
             AktualisiereAnsicht();
             LeereEingaben();
@@ -92,8 +106,23 @@ namespace Schulplaner
             }
 
             dataGridViewTermine.Rows.Remove(zeile);
+            letzterGelöschterTermin = zeile;
+            buttonRückgängig.Enabled = true;
             AktualisiereAnsicht();
             LeereEingaben();
+        }
+
+        private void buttonRückgängig_Click(object sender, EventArgs e)
+        {
+            if (letzterGelöschterTermin == null)
+            {
+                return;
+            }
+
+            dataGridViewTermine.Rows.Add(letzterGelöschterTermin);
+            letzterGelöschterTermin = null;
+            buttonRückgängig.Enabled = false;
+            AktualisiereAnsicht();
         }
 
         private void buttonBearbeiten_Click(object sender, EventArgs e)
@@ -115,6 +144,7 @@ namespace Schulplaner
             zeile.Cells["spalteDatum"].Value = dateTimePickerDatum.Value.Date;
             zeile.Cells["spalteArt"].Value = comboBoxArt.SelectedItem?.ToString() ?? "Anderer Termin";
             zeile.Cells["spalteNotiz"].Value = textBoxNotiz.Text.Trim();
+            zeile.Cells["spaltePriorität"].Value = comboBoxPriorität.Text;
 
             AktualisiereAnsicht();
             LeereEingaben();
@@ -150,6 +180,15 @@ namespace Schulplaner
             comboBoxArt.SelectedItem = zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin";
             textBoxNotiz.Text = zeile.Cells["spalteNotiz"].Value?.ToString() ?? "";
 
+            if (zeile.Cells["spaltePriorität"].Value == null)
+            {
+                comboBoxPriorität.SelectedItem = "Mittel";
+            }
+            else
+            {
+                comboBoxPriorität.SelectedItem = zeile.Cells["spaltePriorität"].Value.ToString();
+            }
+
             if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum))
             {
                 dateTimePickerDatum.Value = datum;
@@ -170,6 +209,33 @@ namespace Schulplaner
         private void buttonErinnerungen_Click(object sender, EventArgs e)
         {
             ZeigeErinnerungen(true);
+        }
+
+        private void buttonCsvExport_Click(object sender, EventArgs e)
+        {
+            using SaveFileDialog dialog = new()
+            {
+                Title = "Termine als CSV speichern",
+                Filter = "CSV-Dateien (*.csv)|*.csv",
+                DefaultExt = "csv",
+                AddExtension = true,
+                FileName = "Termine.csv"
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            try
+            {
+                File.WriteAllText(dialog.FileName, ErstelleCsv(), new UTF8Encoding(true));
+                MessageBox.Show(this, "Die Termine wurden als CSV-Datei exportiert.", "Export abgeschlossen");
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
+            {
+                MessageBox.Show(this, $"Die CSV-Datei konnte nicht gespeichert werden.\n{ex.Message}", "Fehler beim Export");
+            }
         }
 
         private void Form1_Shown(object? sender, EventArgs e)
@@ -196,12 +262,33 @@ namespace Schulplaner
             return true;
         }
 
+        private bool TerminBereitsVorhanden()
+        {
+            string name = textBoxName.Text.Trim();
+            string fach = textBoxFach.Text.Trim();
+            DateTime datum = dateTimePickerDatum.Value.Date;
+
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                if (string.Equals(zeile.Cells["spalteName"].Value?.ToString()?.Trim(), name, StringComparison.CurrentCultureIgnoreCase)
+                    && string.Equals(zeile.Cells["spalteFach"].Value?.ToString()?.Trim(), fach, StringComparison.CurrentCultureIgnoreCase)
+                    && VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime vorhandenesDatum)
+                    && vorhandenesDatum.Date == datum)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void LeereEingaben()
         {
             textBoxName.Clear();
             textBoxFach.Clear();
             dateTimePickerDatum.Value = DateTime.Today;
             comboBoxArt.SelectedItem = "Anderer Termin";
+            comboBoxPriorität.SelectedItem = "Mittel";
             textBoxName.Focus();
             textBoxNotiz.Clear();
         }
@@ -319,11 +406,26 @@ namespace Schulplaner
                     datum.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                     zeile.Cells["spalteArt"].Value?.ToString() ?? "Anderer Termin",
                     zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen,
-                    zeile.Cells["spalteNotiz"].Value?.ToString() ?? ""
+                    zeile.Cells["spalteNotiz"].Value?.ToString() ?? "",
+                    zeile.Cells["spaltePriorität"].Value?.ToString() ?? "Mittel"
                 });
             }
 
             return termine;
+        }
+
+        private string ErstelleCsv()
+        {
+            StringBuilder csv = new();
+            csv.AppendLine("Name;Fach;Datum;Terminart;Status;Notiz;Priorität");
+
+            foreach (string[] termin in SammleTermine())
+            {
+                string[] felder = Array.ConvertAll(termin, wert => "\"" + wert.Replace("\"", "\"\"") + "\"");
+                csv.AppendLine(string.Join(";", felder));
+            }
+
+            return csv.ToString();
         }
 
         private void LadeTermine()
@@ -333,13 +435,20 @@ namespace Schulplaner
                 foreach (string[] termin in LiesTermineAusDatei(dateiPfad))
                 {
                     VersucheDatum(termin[2], out DateTime datum);
+                    string priorität = "Mittel";
+                    if (termin.Length == 7)
+                    {
+                        priorität = termin[6];
+                    }
+
                     dataGridViewTermine.Rows.Add(
                         termin[0],
                         termin[1],
                         datum.Date,
                         termin.Length >= 4 ? termin[3] : "Anderer Termin",
                         termin.Length >= 5 && termin[4] == StatusErledigt ? StatusErledigt : StatusOffen,
-                        termin.Length >= 6 ? termin[5] : "");
+                        termin.Length >= 6 ? termin[5] : "",
+                        priorität);
                 }
 
                 dataGridViewTermine.ClearSelection();
@@ -366,7 +475,7 @@ namespace Schulplaner
 
             foreach (string[] termin in termine)
             {
-                if (termin == null || (termin.Length != 3 && termin.Length != 4 && termin.Length != 5 && termin.Length != 6)
+                if (termin == null || (termin.Length != 3 && termin.Length != 4 && termin.Length != 5 && termin.Length != 6 && termin.Length != 7)
                     || !VersucheDatum(termin[2], out _))
                 {
                     throw new JsonException("Ein gespeicherter Termin ist unvollständig.");
@@ -482,7 +591,7 @@ namespace Schulplaner
                 beschriftung.ForeColor = dunkelblau;
             }
 
-            foreach (Button knopf in new[] { buttonHinzufügen, buttonLöschen, buttonBearbeiten, buttonStatus, buttonErinnerungen })
+            foreach (Button knopf in new[] { buttonHinzufügen, buttonLöschen, buttonBearbeiten, buttonStatus, buttonErinnerungen, buttonCsvExport, buttonRückgängig })
             {
                 knopf.FlatStyle = FlatStyle.Flat;
                 knopf.FlatAppearance.BorderSize = 0;
@@ -497,6 +606,8 @@ namespace Schulplaner
             buttonLöschen.BackColor = Color.FromArgb(177, 73, 78);
             buttonStatus.BackColor = Color.FromArgb(75, 133, 88);
             buttonErinnerungen.BackColor = Color.FromArgb(166, 108, 49);
+            buttonCsvExport.BackColor = dunkelblau;
+            buttonRückgängig.BackColor = Color.FromArgb(92, 100, 115);
 
             dataGridViewTermine.BackgroundColor = Color.White;
             dataGridViewTermine.BorderStyle = BorderStyle.None;
