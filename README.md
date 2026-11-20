@@ -80,7 +80,9 @@ Ich habe eine Warnung vor doppelten Terminen und einen CSV-Export eingebaut. Aus
 
 ## Hausaufgaben vom 20.11.2026
 
-- [ ] Einen Prioritätsfilter einbauen und ihn mit den bestehenden Filtern für Terminart und Status kombinieren. 
+- [x] Einen Prioritätsfilter einbauen und ihn mit den bestehenden Filtern für Terminart und Status kombinieren. 
+
+Ich habe einen Prioritätsfilter eingebaut, mit dem ich Termine nach «Niedrig», «Mittel» oder «Hoch» anzeigen kann. Er funktioniert zusammen mit den Filtern für Terminart und Status; beim Anordnen der Felder musste ich noch eine kleine Überlappung beheben.
 
 ## 27.11.2026
 - [ ] Eine Wochenübersicht anzeigen, die offene Termine der nächsten sieben Tage nach Datum sortiert auflistet.
