@@ -57,6 +57,8 @@ namespace Schulplaner
             labelÜberfällig = new Label();
             labelPriorität = new Label();
             comboBoxPriorität = new ComboBox();
+            labelPrioritätsFilter = new Label();
+            comboBoxPrioritätsFilter = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTermine).BeginInit();
             SuspendLayout();
             // 
@@ -110,9 +112,9 @@ namespace Schulplaner
             labelFilter.AutoSize = true;
             labelFilter.Location = new Point(30, 303);
             labelFilter.Name = "labelFilter";
-            labelFilter.Size = new Size(50, 25);
+            labelFilter.Size = new Size(85, 25);
             labelFilter.TabIndex = 9;
-            labelFilter.Text = "Filter";
+            labelFilter.Text = "Terminart";
             // 
             // labelKalender
             // 
@@ -171,9 +173,9 @@ namespace Schulplaner
             comboBoxFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFilter.FormattingEnabled = true;
             comboBoxFilter.Items.AddRange(new object[] { "Alle", "Prüfung", "Hausaufgabe", "Anderer Termin" });
-            comboBoxFilter.Location = new Point(140, 298);
+            comboBoxFilter.Location = new Point(135, 298);
             comboBoxFilter.Name = "comboBoxFilter";
-            comboBoxFilter.Size = new Size(290, 33);
+            comboBoxFilter.Size = new Size(150, 33);
             comboBoxFilter.TabIndex = 10;
             // 
             // buttonHinzufügen
@@ -338,15 +340,15 @@ namespace Schulplaner
             comboBoxStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxStatus.FormattingEnabled = true;
             comboBoxStatus.Items.AddRange(new object[] { "Alle", "Offen", "Erledigt" });
-            comboBoxStatus.Location = new Point(530, 298);
+            comboBoxStatus.Location = new Point(355, 298);
             comboBoxStatus.Name = "comboBoxStatus";
-            comboBoxStatus.Size = new Size(258, 33);
+            comboBoxStatus.Size = new Size(125, 33);
             comboBoxStatus.TabIndex = 21;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(448, 301);
+            label1.Location = new Point(295, 301);
             label1.Name = "label1";
             label1.Size = new Size(60, 25);
             label1.TabIndex = 22;
@@ -378,6 +380,19 @@ namespace Schulplaner
             comboBoxPriorität.SelectedIndex = 1;
             comboBoxPriorität.Size = new Size(260, 33);
             comboBoxPriorität.TabIndex = 30;
+            labelPrioritätsFilter.AutoSize = true;
+            labelPrioritätsFilter.Location = new Point(490, 301);
+            labelPrioritätsFilter.Name = "labelPrioritätsFilter";
+            labelPrioritätsFilter.Size = new Size(78, 25);
+            labelPrioritätsFilter.TabIndex = 33;
+            labelPrioritätsFilter.Text = "Priorität";
+            comboBoxPrioritätsFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPrioritätsFilter.FormattingEnabled = true;
+            comboBoxPrioritätsFilter.Items.AddRange(new object[] { "Alle", "Niedrig", "Mittel", "Hoch" });
+            comboBoxPrioritätsFilter.Location = new Point(565, 298);
+            comboBoxPrioritätsFilter.Name = "comboBoxPrioritätsFilter";
+            comboBoxPrioritätsFilter.Size = new Size(225, 33);
+            comboBoxPrioritätsFilter.TabIndex = 32;
             labelOffen.AutoSize = true;
             labelOffen.Location = new Point(30, 410);
             labelOffen.Name = "labelOffen";
@@ -402,6 +417,8 @@ namespace Schulplaner
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1120, 690);
+            Controls.Add(comboBoxPrioritätsFilter);
+            Controls.Add(labelPrioritätsFilter);
             Controls.Add(buttonRückgängig);
             Controls.Add(comboBoxPriorität);
             Controls.Add(labelPriorität);
@@ -482,5 +499,7 @@ namespace Schulplaner
         private Label labelÜberfällig;
         private Label labelPriorität;
         private ComboBox comboBoxPriorität;
+        private Label labelPrioritätsFilter;
+        private ComboBox comboBoxPrioritätsFilter;
     }
 }
