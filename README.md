@@ -72,6 +72,6 @@ Ich habe über der Tabelle Zähler für offene, erledigte und überfällige Term
 ## 20.11.2026
 
 - [x] Beim Hinzufügen vor einem doppelten Termin mit gleichem Namen, Fach und Datum warnen.
-- [ ] Einen Button einbauen, mit dem ich meine Termine als CSV-Datei exportieren kann.
+- [x] Einen Button einbauen, mit dem ich meine Termine als CSV-Datei exportieren kann.
 - [ ] Für Termine eine Priorität wie «Niedrig», «Mittel» oder «Hoch» hinzufügen und speichern.
 - [ ] Das letzte Löschen rückgängig machen können und prüfen, ob der richtige Termin zurückkommt.
