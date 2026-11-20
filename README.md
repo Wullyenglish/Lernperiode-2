@@ -77,3 +77,12 @@ Ich habe über der Tabelle Zähler für offene, erledigte und überfällige Term
 - [x] Das letzte Löschen rückgängig machen können und prüfen, ob der richtige Termin zurückkommt.
 
 Ich habe eine Warnung vor doppelten Terminen und einen CSV-Export eingebaut. Ausserdem kann ich Terminen eine Priorität geben und speichern sowie den zuletzt gelöschten Termin wiederherstellen.
+
+## Hausaufgaben vom 20.11.2026
+
+- [ ] Einen Prioritätsfilter einbauen und ihn mit den bestehenden Filtern für Terminart und Status kombinieren. 
+
+## 27.11.2026
+- [ ] Eine Wochenübersicht anzeigen, die offene Termine der nächsten sieben Tage nach Datum sortiert auflistet.
+- [ ] Auch beim Ändern vor doppelten Terminen warnen, ohne den ausgewählten Termin selbst als Duplikat zu zählen.
+- [ ] Einen Button für eine Sicherungskopie der Termine einbauen und prüfen, ob Notizen und Prioritäten darin enthalten sind.
