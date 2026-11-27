@@ -17,6 +17,7 @@ namespace Schulplaner
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             labelTitel = new Label();
             labelName = new Label();
@@ -47,6 +48,12 @@ namespace Schulplaner
             spalteNotiz = new DataGridViewTextBoxColumn();
             spaltePriorität = new DataGridViewTextBoxColumn();
             monthCalendarTermine = new MonthCalendar();
+            tabTerminlisten = new TabControl();
+            tabWoche = new TabPage();
+            tabTag = new TabPage();
+            labelWochenzeitraum = new Label();
+            listBoxWochentermine = new ListBox();
+            timerWochenuebersicht = new System.Windows.Forms.Timer(components);
             listBoxTagesTermine = new ListBox();
             comboBoxStatus = new ComboBox();
             label1 = new Label();
@@ -128,9 +135,8 @@ namespace Schulplaner
             // 
             // labelTagesTermine
             // 
-            labelTagesTermine.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelTagesTermine.AutoSize = true;
-            labelTagesTermine.Location = new Point(820, 365);
+            labelTagesTermine.Dock = DockStyle.Top;
             labelTagesTermine.Name = "labelTagesTermine";
             labelTagesTermine.Size = new Size(248, 25);
             labelTagesTermine.TabIndex = 19;
@@ -323,17 +329,65 @@ namespace Schulplaner
             monthCalendarTermine.Name = "monthCalendarTermine";
             monthCalendarTermine.TabIndex = 17;
             // 
+            // tabTerminlisten
+            // 
+            tabTerminlisten.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            tabTerminlisten.Controls.Add(tabWoche);
+            tabTerminlisten.Controls.Add(tabTag);
+            tabTerminlisten.Location = new Point(820, 365);
+            tabTerminlisten.Name = "tabTerminlisten";
+            tabTerminlisten.SelectedIndex = 0;
+            tabTerminlisten.Size = new Size(270, 280);
+            tabTerminlisten.TabIndex = 20;
+            // 
+            // tabWoche
+            // 
+            tabWoche.Controls.Add(listBoxWochentermine);
+            tabWoche.Controls.Add(labelWochenzeitraum);
+            tabWoche.Name = "tabWoche";
+            tabWoche.Padding = new Padding(4);
+            tabWoche.Text = "Woche";
+            tabWoche.UseVisualStyleBackColor = true;
+            // 
+            // tabTag
+            // 
+            tabTag.Controls.Add(listBoxTagesTermine);
+            tabTag.Controls.Add(labelTagesTermine);
+            tabTag.Name = "tabTag";
+            tabTag.Padding = new Padding(4);
+            tabTag.Text = "Tag";
+            tabTag.UseVisualStyleBackColor = true;
+            // 
+            // labelWochenzeitraum
+            // 
+            labelWochenzeitraum.AutoSize = true;
+            labelWochenzeitraum.Dock = DockStyle.Top;
+            labelWochenzeitraum.Name = "labelWochenzeitraum";
+            labelWochenzeitraum.Padding = new Padding(0, 0, 0, 4);
+            // 
+            // listBoxWochentermine
+            // 
+            listBoxWochentermine.AccessibleName = "Offene Termine der nächsten sieben Tage";
+            listBoxWochentermine.Dock = DockStyle.Fill;
+            listBoxWochentermine.HorizontalScrollbar = true;
+            listBoxWochentermine.IntegralHeight = false;
+            listBoxWochentermine.Name = "listBoxWochentermine";
+            listBoxWochentermine.TabIndex = 0;
+            // 
             // listBoxTagesTermine
             // 
-            listBoxTagesTermine.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            listBoxTagesTermine.Dock = DockStyle.Fill;
             listBoxTagesTermine.FormattingEnabled = true;
             listBoxTagesTermine.HorizontalScrollbar = true;
             listBoxTagesTermine.IntegralHeight = false;
             listBoxTagesTermine.ItemHeight = 25;
-            listBoxTagesTermine.Location = new Point(820, 405);
             listBoxTagesTermine.Name = "listBoxTagesTermine";
-            listBoxTagesTermine.Size = new Size(270, 240);
-            listBoxTagesTermine.TabIndex = 20;
+            listBoxTagesTermine.TabIndex = 0;
+            // 
+            // timerWochenuebersicht
+            // 
+            timerWochenuebersicht.Enabled = true;
+            timerWochenuebersicht.Interval = 60000;
             // 
             // comboBoxStatus
             // 
@@ -429,7 +483,7 @@ namespace Schulplaner
             Controls.Add(labelNotiz);
             Controls.Add(label1);
             Controls.Add(comboBoxStatus);
-            Controls.Add(listBoxTagesTermine);
+            Controls.Add(tabTerminlisten);
             Controls.Add(monthCalendarTermine);
             Controls.Add(dataGridViewTermine);
             Controls.Add(buttonErinnerungen);
@@ -443,7 +497,6 @@ namespace Schulplaner
             Controls.Add(dateTimePickerDatum);
             Controls.Add(textBoxFach);
             Controls.Add(textBoxName);
-            Controls.Add(labelTagesTermine);
             Controls.Add(labelKalender);
             Controls.Add(labelFilter);
             Controls.Add(labelArt);
@@ -489,6 +542,12 @@ namespace Schulplaner
         private DataGridViewTextBoxColumn spalteNotiz;
         private DataGridViewTextBoxColumn spaltePriorität;
         private MonthCalendar monthCalendarTermine;
+        private TabControl tabTerminlisten;
+        private TabPage tabWoche;
+        private TabPage tabTag;
+        private Label labelWochenzeitraum;
+        private ListBox listBoxWochentermine;
+        private System.Windows.Forms.Timer timerWochenuebersicht;
         private ListBox listBoxTagesTermine;
         private ComboBox comboBoxStatus;
         private Label label1;
