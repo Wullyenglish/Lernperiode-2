@@ -87,4 +87,13 @@ Ich habe einen Prioritätsfilter eingebaut, mit dem ich Termine nach «Niedrig»
 ## 27.11.2026
 - [x] Eine Wochenübersicht anzeigen, die offene Termine der nächsten sieben Tage nach Datum sortiert auflistet.
 - [x] Auch beim Ändern vor doppelten Terminen warnen, ohne den ausgewählten Termin selbst als Duplikat zu zählen.
+
+Ich habe im Schulplaner eine Wochenübersicht eingebaut. Sie zeigt die offenen Termine für heute und die nächsten sechs Tage nach Datum sortiert. Beim Ändern eines Termins erscheint jetzt auch eine Warnung, wenn ein anderer Termin denselben Namen, dasselbe Fach und dasselbe Datum hat.
+
+## Hausaufgaben vom 20.11.2026
 - [ ] Einen Button für eine Sicherungskopie der Termine einbauen und prüfen, ob Notizen und Prioritäten darin enthalten sind.
+- [ ] Unter dem Kalender den Reiter «Woche» hinzufügen.
+
+## 04.12.26
+- [ ] Offene Termine der nächsten sieben Tage nach Datum sortiert anzeigen.
+- [ ] Beim Ändern vor doppelten Terminen warnen und den ausgewählten Termin bei der Prüfung überspringen.
