@@ -12,6 +12,7 @@ namespace Schulplaner
         private readonly string dateiPfad;
         private bool ladenFehlgeschlagen;
         private DataGridViewRow? letzterGelöschterTermin;
+        private DateTime datumWochenuebersicht;
 
         public Form1() : this(Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -29,17 +30,14 @@ namespace Schulplaner
             comboBoxPrioritätsFilter.SelectedIndex = 0;
             GestalteOberfläche();
             LadeTermine();
-            SortiereTermine();
-            AktualisiereZeilenfarben();
-            AktualisiereFilter();
-            AktualisiereKalender();
-            AktualisiereZähler();
+            AktualisiereAnsicht();
             dataGridViewTermine.SelectionChanged += dataGridViewTermine_SelectionChanged;
 
             comboBoxFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             comboBoxStatus.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             comboBoxPrioritätsFilter.SelectedIndexChanged += comboBoxFilter_SelectedIndexChanged;
             monthCalendarTermine.DateSelected += monthCalendarTermine_DateSelected;
+            timerWochenuebersicht.Tick += timerWochenuebersicht_Tick;
             FormClosing += Form1_FormClosing;
             Shown += Form1_Shown;
         }
@@ -53,12 +51,7 @@ namespace Schulplaner
 
             if (TerminBereitsVorhanden())
             {
-                MessageBox.Show(
-                    this,
-                    "Ein Termin mit diesem Namen, Fach und Datum ist bereits vorhanden.",
-                    "Doppelter Termin",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                ZeigeDuplikatWarnung();
                 return;
             }
 
@@ -141,6 +134,12 @@ namespace Schulplaner
             }
 
             DataGridViewRow zeile = dataGridViewTermine.SelectedRows[0];
+            if (TerminBereitsVorhanden(zeile))
+            {
+                ZeigeDuplikatWarnung();
+                return;
+            }
+
             zeile.Cells["spalteName"].Value = textBoxName.Text.Trim();
             zeile.Cells["spalteFach"].Value = textBoxFach.Text.Trim();
             zeile.Cells["spalteDatum"].Value = dateTimePickerDatum.Value.Date;
@@ -166,6 +165,7 @@ namespace Schulplaner
             AktualisiereZeilenfarben();
             AktualisiereFilter();
             AktualisiereTagesliste();
+            AktualisiereWochenuebersicht(DateTime.Today);
             AktualisiereZähler();
         }
 
@@ -206,6 +206,7 @@ namespace Schulplaner
         private void monthCalendarTermine_DateSelected(object? sender, DateRangeEventArgs e)
         {
             AktualisiereTagesliste();
+            tabTerminlisten.SelectedTab = tabTag;
         }
 
         private void buttonErinnerungen_Click(object sender, EventArgs e)
@@ -264,7 +265,7 @@ namespace Schulplaner
             return true;
         }
 
-        private bool TerminBereitsVorhanden()
+        private bool TerminBereitsVorhanden(DataGridViewRow? ausgewählteZeile = null)
         {
             string name = textBoxName.Text.Trim();
             string fach = textBoxFach.Text.Trim();
@@ -272,6 +273,11 @@ namespace Schulplaner
 
             foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
             {
+                if (zeile == ausgewählteZeile)
+                {
+                    continue;
+                }
+
                 if (string.Equals(zeile.Cells["spalteName"].Value?.ToString()?.Trim(), name, StringComparison.CurrentCultureIgnoreCase)
                     && string.Equals(zeile.Cells["spalteFach"].Value?.ToString()?.Trim(), fach, StringComparison.CurrentCultureIgnoreCase)
                     && VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime vorhandenesDatum)
@@ -282,6 +288,16 @@ namespace Schulplaner
             }
 
             return false;
+        }
+
+        private void ZeigeDuplikatWarnung()
+        {
+            MessageBox.Show(
+                this,
+                "Ein Termin mit diesem Namen, Fach und Datum ist bereits vorhanden.",
+                "Doppelter Termin",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
         }
 
         private void LeereEingaben()
@@ -301,6 +317,7 @@ namespace Schulplaner
             AktualisiereZeilenfarben();
             AktualisiereFilter();
             AktualisiereKalender();
+            AktualisiereWochenuebersicht(DateTime.Today);
             AktualisiereZähler();
         }
 
@@ -541,6 +558,46 @@ namespace Schulplaner
             }
         }
 
+        private void AktualisiereWochenuebersicht(DateTime heute)
+        {
+            datumWochenuebersicht = heute;
+            DateTime letzterTag = heute.AddDays(6);
+            labelWochenzeitraum.Text = $"{heute:dd.MM.yyyy} bis {letzterTag:dd.MM.yyyy}";
+            listBoxWochentermine.Items.Clear();
+
+            // Die Termine in der Tabelle sind bereits nach Datum sortiert.
+            foreach (DataGridViewRow zeile in dataGridViewTermine.Rows)
+            {
+                string status = zeile.Cells["spalteStatus"].Value?.ToString() ?? StatusOffen;
+                if (status == StatusErledigt)
+                {
+                    continue;
+                }
+
+                if (VersucheDatum(zeile.Cells["spalteDatum"].Value, out DateTime datum)
+                    && datum.Date >= heute && datum.Date <= letzterTag)
+                {
+                    string name = zeile.Cells["spalteName"].Value?.ToString() ?? "";
+                    string fach = zeile.Cells["spalteFach"].Value?.ToString() ?? "";
+                    listBoxWochentermine.Items.Add($"{datum:dd.MM.}  {name} ({fach})");
+                }
+            }
+
+            if (listBoxWochentermine.Items.Count == 0)
+            {
+                listBoxWochentermine.Items.Add("Keine offenen Termine.");
+            }
+        }
+
+        private void timerWochenuebersicht_Tick(object? sender, EventArgs e)
+        {
+            DateTime heute = DateTime.Today;
+            if (datumWochenuebersicht != heute)
+            {
+                AktualisiereWochenuebersicht(heute);
+            }
+        }
+
         private void ZeigeErinnerungen(bool auchWennLeer)
         {
             List<string> erinnerungen = new();
@@ -631,6 +688,8 @@ namespace Schulplaner
             dataGridViewTermine.RowTemplate.Height = 34;
             listBoxTagesTermine.BackColor = Color.White;
             listBoxTagesTermine.Font = new Font("Segoe UI", 9.5F);
+            listBoxWochentermine.BackColor = Color.White;
+            listBoxWochentermine.Font = listBoxTagesTermine.Font;
             monthCalendarTermine.TitleBackColor = dunkelblau;
             monthCalendarTermine.TitleForeColor = Color.White;
         }
