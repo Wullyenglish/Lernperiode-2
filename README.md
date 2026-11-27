@@ -85,6 +85,6 @@ Ich habe eine Warnung vor doppelten Terminen und einen CSV-Export eingebaut. Aus
 Ich habe einen Prioritätsfilter eingebaut, mit dem ich Termine nach «Niedrig», «Mittel» oder «Hoch» anzeigen kann. Er funktioniert zusammen mit den Filtern für Terminart und Status; beim Anordnen der Felder musste ich noch eine kleine Überlappung beheben.
 
 ## 27.11.2026
-- [ ] Eine Wochenübersicht anzeigen, die offene Termine der nächsten sieben Tage nach Datum sortiert auflistet.
-- [ ] Auch beim Ändern vor doppelten Terminen warnen, ohne den ausgewählten Termin selbst als Duplikat zu zählen.
+- [x] Eine Wochenübersicht anzeigen, die offene Termine der nächsten sieben Tage nach Datum sortiert auflistet.
+- [x] Auch beim Ändern vor doppelten Terminen warnen, ohne den ausgewählten Termin selbst als Duplikat zu zählen.
 - [ ] Einen Button für eine Sicherungskopie der Termine einbauen und prüfen, ob Notizen und Prioritäten darin enthalten sind.
