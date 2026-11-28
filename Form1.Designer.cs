@@ -38,6 +38,7 @@ namespace Schulplaner
             buttonStatus = new Button();
             buttonErinnerungen = new Button();
             buttonCsvExport = new Button();
+            buttonSicherung = new Button();
             buttonRückgängig = new Button();
             dataGridViewTermine = new DataGridView();
             spalteName = new DataGridViewTextBoxColumn();
@@ -234,6 +235,13 @@ namespace Schulplaner
             buttonCsvExport.TabIndex = 28;
             buttonCsvExport.Text = "CSV-Export";
             buttonCsvExport.Click += buttonCsvExport_Click;
+            buttonSicherung.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonSicherung.Location = new Point(900, 14);
+            buttonSicherung.Name = "buttonSicherung";
+            buttonSicherung.Size = new Size(190, 38);
+            buttonSicherung.TabIndex = 34;
+            buttonSicherung.Text = "Sicherungskopie";
+            buttonSicherung.Click += buttonSicherung_Click;
             buttonRückgängig.Enabled = false;
             buttonRückgängig.Location = new Point(600, 401);
             buttonRückgängig.Name = "buttonRückgängig";
@@ -488,6 +496,7 @@ namespace Schulplaner
             Controls.Add(dataGridViewTermine);
             Controls.Add(buttonErinnerungen);
             Controls.Add(buttonCsvExport);
+            Controls.Add(buttonSicherung);
             Controls.Add(buttonStatus);
             Controls.Add(buttonLöschen);
             Controls.Add(buttonBearbeiten);
@@ -532,6 +541,7 @@ namespace Schulplaner
         private Button buttonStatus;
         private Button buttonErinnerungen;
         private Button buttonCsvExport;
+        private Button buttonSicherung;
         private Button buttonRückgängig;
         private DataGridView dataGridViewTermine;
         private DataGridViewTextBoxColumn spalteName;
