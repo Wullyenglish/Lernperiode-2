@@ -241,6 +241,43 @@ namespace Schulplaner
             }
         }
 
+        private void buttonSicherung_Click(object sender, EventArgs e)
+        {
+            using SaveFileDialog dialog = new()
+            {
+                Title = "Sicherungskopie speichern",
+                Filter = "JSON-Dateien (*.json)|*.json",
+                DefaultExt = "json",
+                AddExtension = true,
+                FileName = $"Termine-Sicherung-{DateTime.Today:yyyy-MM-dd}.json"
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            try
+            {
+                SpeichereSicherungskopie(dialog.FileName);
+                MessageBox.Show(this, "Die Sicherungskopie wurde gespeichert.", "Sicherungskopie");
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
+            {
+                MessageBox.Show(this, $"Die Sicherungskopie konnte nicht gespeichert werden.\n{ex.Message}", "Fehler beim Speichern");
+            }
+        }
+
+        private void SpeichereSicherungskopie(string pfad)
+        {
+            if (string.Equals(Path.GetFullPath(pfad), Path.GetFullPath(dateiPfad), StringComparison.OrdinalIgnoreCase))
+            {
+                throw new IOException("Wählen Sie einen anderen Dateinamen oder Ordner für die Sicherungskopie.");
+            }
+
+            SchreibeTermineInDatei(pfad, SammleTermine());
+        }
+
         private void Form1_Shown(object? sender, EventArgs e)
         {
             ZeigeErinnerungen(false);
@@ -654,7 +691,7 @@ namespace Schulplaner
                 beschriftung.ForeColor = dunkelblau;
             }
 
-            foreach (Button knopf in new[] { buttonHinzufügen, buttonLöschen, buttonBearbeiten, buttonStatus, buttonErinnerungen, buttonCsvExport, buttonRückgängig })
+            foreach (Button knopf in new[] { buttonHinzufügen, buttonLöschen, buttonBearbeiten, buttonStatus, buttonErinnerungen, buttonCsvExport, buttonRückgängig, buttonSicherung })
             {
                 knopf.FlatStyle = FlatStyle.Flat;
                 knopf.FlatAppearance.BorderSize = 0;
@@ -670,6 +707,7 @@ namespace Schulplaner
             buttonStatus.BackColor = Color.FromArgb(75, 133, 88);
             buttonErinnerungen.BackColor = Color.FromArgb(166, 108, 49);
             buttonCsvExport.BackColor = dunkelblau;
+            buttonSicherung.BackColor = dunkelblau;
             buttonRückgängig.BackColor = Color.FromArgb(92, 100, 115);
 
             dataGridViewTermine.BackgroundColor = Color.White;
