@@ -90,9 +90,11 @@ Ich habe einen Prioritätsfilter eingebaut, mit dem ich Termine nach «Niedrig»
 
 Ich habe im Schulplaner eine Wochenübersicht eingebaut. Sie zeigt die offenen Termine für heute und die nächsten sechs Tage nach Datum sortiert. Beim Ändern eines Termins erscheint jetzt auch eine Warnung, wenn ein anderer Termin denselben Namen, dasselbe Fach und dasselbe Datum hat.
 
-## Hausaufgaben vom 20.11.2026
-- [ ] Einen Button für eine Sicherungskopie der Termine einbauen und prüfen, ob Notizen und Prioritäten darin enthalten sind.
-- [ ] Unter dem Kalender den Reiter «Woche» hinzufügen.
+## Hausaufgaben vom 27.11.2026
+- [x] Einen Button für eine Sicherungskopie der Termine einbauen und prüfen, ob Notizen und Prioritäten darin enthalten sind.
+- [x] Unter dem Kalender den Reiter «Woche» hinzufügen.
+
+Ich habe einen Button eingebaut, mit dem man alle Termine als Sicherungskopie speichern kann. Beim Test waren die Notizen und Prioritäten mit dabei. Ausserdem habe ich geprüft, dass der Reiter «Woche» die offenen Termine der nächsten sieben Tage nach Datum sortiert anzeigt.
 
 ## 04.12.26
 - [ ] Offene Termine der nächsten sieben Tage nach Datum sortiert anzeigen.
